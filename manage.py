@@ -5,6 +5,8 @@ from flask_migrate import Migrate, MigrateCommand
 
 from ihome import app, db
 
+# 需求：不修改业务逻辑的代码，只通过修改manage.py文件中的一句代码获取不同配置环境中的app
+
 # 创建Manager管理对象
 manager = Manager(app)
 Migrate(app, db)
