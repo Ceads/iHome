@@ -45,3 +45,10 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = "mysql://root:mysql@127.0.0.1:3306/ihome_testcase"
     # 开启测试标志
     TESTING = True
+
+
+config_dict = {
+    "development": DevelopmentConfig,
+    "production": ProductionConfig,
+    "testing": TestingConfig
+}
