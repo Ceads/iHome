@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 import redis
 from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+
 
 class Config(object):
     """配置类"""
@@ -29,7 +32,8 @@ class Config(object):
     # 开启session签名
     SESSION_USE_SIGNER = True
     # 设置session过期时间，两天
-    PERMANENT_SESSION_LIFETIME = 86400*2
+    PERMANENT_SESSION_LIFETIME = 86400 * 2
+
 
 # 创建Flask应用程序实例
 app = Flask(__name__)
@@ -38,7 +42,6 @@ app.config.from_object(Config)
 
 # 创建SQLAlchemy对象
 db = SQLAlchemy(app)
-
 
 # 创建redis数据库链接对象
 redis_store = redis.StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT)
@@ -50,17 +53,25 @@ CSRFProtect(app)
 # session信息存储
 Session(app)
 
+# 创建Manager管理对象
+manager = Manager(app)
+Migrate(app, db)
+# 添加迁移命令
+manager.add_command("db", MigrateCommand)
+
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     # 测试redis
     redis_store.set("name", "itcast")
 
     # 测试session存储
-    session["name"]="itheima"
+    session["name"] = "itheima"
 
     return 'index'
 
 
 if __name__ == '__main__':
     # 运行开发web服务器
-    app.run()
+    # app.run()
+    manager.run()
