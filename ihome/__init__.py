@@ -28,7 +28,6 @@ def create_app(config_name):
     # 创建redis数据库链接对象
     global redis_store
     redis_store = redis.StrictRedis(host=config_cls.REDIS_HOST, port=config_cls.REDIS_PORT)
-    print "redis_store: ", redis_store
     # 开启CSRF保护
     # 只做保护校验：至于生成csrf_token cookie 还有请求时携带csrf_token 需要自己来完成
     CSRFProtect(app)
@@ -38,6 +37,6 @@ def create_app(config_name):
 
     # 3.注册蓝图对象(1&2在index.py)
     from ihome.api_1_0 import api
-    app.register_blueprint(api)
+    app.register_blueprint(api, url_prefix="/api/v1.0")
 
     return app

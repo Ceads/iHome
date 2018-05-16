@@ -2,6 +2,7 @@
 from . import api
 from ihome import redis_store
 
+
 # 2.使用蓝图对象注册路由
 @api.route('/', methods=["GET", "POST"])
 def index():

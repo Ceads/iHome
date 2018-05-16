@@ -16,4 +16,5 @@ manager.add_command("db", MigrateCommand)
 if __name__ == '__main__':
     # 运行开发web服务器
     # app.run()
+    print app.url_map
     manager.run()
