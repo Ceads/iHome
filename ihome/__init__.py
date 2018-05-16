@@ -38,5 +38,7 @@ def create_app(config_name):
     # 3.注册蓝图对象(1&2在index.py)
     from ihome.api_1_0 import api
     app.register_blueprint(api, url_prefix="/api/v1.0")
+    from ihome.web_html import html
+    app.register_blueprint(html)
 
     return app
