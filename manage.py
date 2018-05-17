@@ -3,7 +3,7 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-from ihome import create_app, db
+from ihome import create_app, db, models
 
 # 需求：不修改业务逻辑的代码，只通过修改manage.py文件中的一句代码获取不同配置环境中的app
 app = create_app("development")
