@@ -26,22 +26,24 @@ serverPort = '8883'
 softVersion = '2013-12-26'
 
 
-# 发送模板短信
-# @param to 手机号码
-# @param datas 内容数据 格式为数组 例如：{'12','34'}，如不需替换请填 ''
-# @param $tempId 模板Id
+class CCP(object):
+    def __init__(self):
+        # 初始化REST SDK
+        self.rest = REST(serverIP, serverPort, softVersion)
+        self.rest.setAccount(accountSid, accountToken)
+        self.rest.setAppId(appId)
 
-def sendTemplateSMS(to, datas, tempId):
-    # 初始化REST SDK
-    rest = REST(serverIP, serverPort, softVersion)
-    rest.setAccount(accountSid, accountToken)
-    rest.setAppId(appId)
+    # 发送模板短信
+    # @param to 手机号码
+    # @param datas 内容数据 格式为数组 例如：{'12','34'}，如不需替换请填 ''
+    # @param $tempId 模板Id
+    def send_template_sms(self, to, datas, tempId):
+        result = self.rest.sendTemplateSMS(to, datas, tempId)
+        print result
 
-    result = rest.sendTemplateSMS(to, datas, tempId)
-    print result
 
-
-    # sendTemplateSMS(手机号码,内容数据,模板Id)
+# sendTemplateSMS(手机号码,内容数据,模板Id)
 
 if __name__ == '__main__':
-    sendTemplateSMS("15351545159", ["123456", 5], 1)
+    # sendTemplateSMS("15351545159", ["123456", 5], 1)
+    CCP().send_template_sms("15351545159", ["123456", 5], 1)
