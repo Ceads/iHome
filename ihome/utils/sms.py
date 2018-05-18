@@ -51,4 +51,4 @@ class CCP(object):
 
 if __name__ == '__main__':
     # sendTemplateSMS("15351545159", ["123456", 5], 1)
-    CCP().send_template_sms("15351545159", ["123456", 5], 1)
+    CCP().send_template_sms("18676006886", ["123456", 5], 1)
