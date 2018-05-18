@@ -58,6 +58,9 @@ function sendSMSCode() {
         "contentType": "application/json", // 请求数据的格式
         "data": JSON.stringify(params), // 请求时传递数据
         "datatype": "json", // 期望服务器返回数据类型
+        "headers": {
+            "X-CSRFToken": getCookie("csrf_token"),
+        },
         "success": function (resp) {
             // 回调函数
             if (resp.errno == "0") {
