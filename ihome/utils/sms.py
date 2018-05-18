@@ -39,8 +39,13 @@ class CCP(object):
     # @param $tempId 模板Id
     def send_template_sms(self, to, datas, tempId):
         result = self.rest.sendTemplateSMS(to, datas, tempId)
-        print result
 
+        if result.get("statusCode") == "000000":
+            # 发送成功
+            return 1
+        else:
+            # 发送失败
+            return 0
 
 # sendTemplateSMS(手机号码,内容数据,模板Id)
 
