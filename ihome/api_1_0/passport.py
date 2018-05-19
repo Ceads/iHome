@@ -1,7 +1,9 @@
 # coding=utf-8
 # 此文件中定义和用户登陆，注册有关api
-from flask import request, jsonify
+from flask import request, jsonify, current_app
 
+from ihome import redis_store, db
+from ihome.models import User
 from ihome.utils.response_code import RET
 from . import api
 
@@ -30,8 +32,34 @@ def register():
         return jsonify(errno=RET.PARAMERR, errmsg="参数不完整")
 
 
-        # 2、从redis中获取短信验证码（如果取不到，说明短信已过期）
-        # 3、对比短信验证码，如果一致
-        # 4、创建User对象并保存注册用户的信息
-        # 5、把注册用户的信息添加进数据库
-        # 6、返回应答，注册成功
+    # 2、从redis中获取短信验证码（如果取不到，说明短信已过期）
+    try:
+        real_sms_code = redis_store.get("smscode:%s" % mobile)
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg="获取短信验证码失败")
+
+    if not real_sms_code:
+        return jsonify(errno=RET.NODATA, errmsg="短信验证码已过期")
+
+    # 3、对比短信验证码，如果一致
+    if real_sms_code != sms_code:
+        return jsonify(errno=RET.DATAERR, errmsg="短信验证码错误")
+
+    # 4、创建User对象并保存注册用户的信息
+    user = User()
+    user.mobile = mobile
+    user.name = mobile
+    # todo: 注册密码加密
+    user.password = password
+
+    # 5、把注册用户的信息添加进数据库
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg="保存注册用户信息失败")
+    # 6、返回应答，注册成功
+    return jsonify(errno=RET.OK, errmsg="注册成功")
