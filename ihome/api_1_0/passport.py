@@ -63,6 +63,7 @@ def register():
     5、把注册用户的信息添加进数据库
     6、返回应答，注册成功
     """
+
     # 1、接收参数（手机号，短信验证码，密码）并进行参数检验
     req_dict = request.json
     mobile = req_dict.get("mobile")
@@ -90,6 +91,16 @@ def register():
     if real_sms_code != sms_code:
         return jsonify(errno=RET.DATAERR, errmsg="短信验证码错误")
 
+    # 判断手机号是否已经被注册
+    try:
+        user = User.query.filter(User.mobile == mobile).first()
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg="查询用户信息失败")
+
+    if user:
+        return jsonify(errno=RET.DATAEXIST, errmsg="手机号已注册")
+
     # 4、创建User对象并保存注册用户的信息
     user = User()
     user.mobile = mobile
@@ -105,5 +116,11 @@ def register():
         db.session.rollback()
         current_app.logger.error(e)
         return jsonify(errno=RET.DBERR, errmsg="保存注册用户信息失败")
+
+    # 记住用户登录状态
+    session["user_id"] = user.id
+    session["username"] = user.name
+    session["mobile"] = mobile
+
     # 6、返回应答，注册成功
     return jsonify(errno=RET.OK, errmsg="注册成功")
