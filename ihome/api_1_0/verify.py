@@ -106,6 +106,7 @@ def get_image_code():
     current_app.logger.info("图片验证码是：%s" % text)
 
     # 3、在redis中保存图片验证码
+    # redis_store.set("key", "value", "expires")
     try:
         redis_store.set("imagecode:%s" % image_code_id, text, constants.IMAGE_CODE_REDIS_EXPIRES)
     except Exception as e:

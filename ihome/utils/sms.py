@@ -27,11 +27,22 @@ softVersion = '2013-12-26'
 
 
 class CCP(object):
-    def __init__(self):
-        # 初始化REST SDK
-        self.rest = REST(serverIP, serverPort, softVersion)
-        self.rest.setAccount(accountSid, accountToken)
-        self.rest.setAppId(appId)
+    # cls.instance
+    def __new__(cls, *args, **kwargs):
+        # 判断cls是否拥有属性_instance，此属性用来保存这个类的唯一对象（单例对象）
+        if not hasattr(cls,"_instance"):
+            # 创建一个单例对象
+            obj = super(CCP, cls).__new__(cls, *args, **kwargs)
+            # 初始化REST SDK
+            obj.rest = REST(serverIP, serverPort, softVersion)
+            obj.rest.setAccount(accountSid, accountToken)
+            obj.rest.setAppId(appId)
+            cls._instance = obj
+        # 直接返回
+        return cls._instance
+
+    # def __init__(self):
+
 
     # 发送模板短信
     # @param to 手机号码
@@ -51,4 +62,9 @@ class CCP(object):
 
 if __name__ == '__main__':
     # sendTemplateSMS("15351545159", ["123456", 5], 1)
-    CCP().send_template_sms("18676006886", ["123456", 5], 1)
+    # CCP().send_template_sms("15351545159", ["123456", 5], 1)
+    obj1 = CCP()
+    obj2 = CCP()
+
+    print id(obj1)
+    print id(obj2)

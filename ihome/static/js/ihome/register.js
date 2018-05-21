@@ -15,7 +15,7 @@ function generateUUID() {
     });
     return uuid;
 }
-var imageCodeId = ""
+var imageCodeId = "";
 // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
 function generateImageCode() {
     // 生成uuid（图片验证码编号）
@@ -53,7 +53,7 @@ function sendSMSCode() {
     };
 
     $.ajax({
-        "url": "/api/v1.0/sms_code", //请求url地址
+        "url": "/api/v1.0/sms_code", // 请求url地址
         "type": "post", // 请求方式，默认是get
         "contentType": "application/json", // 请求数据的格式
         "data": JSON.stringify(params), // 请求时传递数据
@@ -67,21 +67,21 @@ function sendSMSCode() {
                 // 发送成功
                 // 进行倒计时60s
                 var num = 60;
-                setInterval(function () {
+                var tid = setInterval(function () {
                     if (num<= 0){
                         // 倒计时结束
                         // 清除定时器
-                        clearInterval(tid)
+                        clearInterval(tid);
                         // 重置获取验证码内容
                         $(".phonecode-a").html(num+"获取验证码");
                         // 添加发送短信点击事件
-                        $(".phonecode-a").attr("onclick", "sendSMSCode():");
+                        $(".phonecode-a").attr("onclick", "sendSMSCode();");
                     }
                     else {
                         // 倒计时剩余秒数-1
                         num -= 1;
                         // 设置倒计时剩余秒数
-                        $(".phonecode-a").html (num+"秒");
+                        $(".phonecode-a").html(num+"秒");
                     }
                 }, 1000)
             }
@@ -117,7 +117,7 @@ $(document).ready(function() {
     });
 
     // TODO: 注册的提交(判断参数是否为空)
-    $(".form-register").submit(function () {
+    $(".form-register").submit(function (e) {
         // alert('submit');
         // 阻止表单默认提交行为
         e.preventDefault();
