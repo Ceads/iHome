@@ -71,7 +71,7 @@ virtualenvwrapper==4.7.1
 w3lib==1.14.2
 wcwidth==0.1.7
 WebOb==1.5.1
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wtf==0.1
 WTForms==2.1
 zope.interface==4.2.0
