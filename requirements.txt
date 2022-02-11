@@ -62,7 +62,7 @@ six==1.10.0
 SQLAlchemy==1.2.7
 stevedore==1.13.0
 traitlets==4.3.2
-Twisted==16.3.0
+Twisted==22.1.0
 unity-lens-photos==1.0
 urllib3==1.21.1
 virtualenv==15.0.1
